@@ -1,0 +1,6 @@
+{
+  "arrivals": [
+    {"slot": 1, "endpoint": "alpha", "recv_us": 1000},
+    {"slot": 2, "endpoint": "alpha", "recv_us": 2000}
+  ]
+}

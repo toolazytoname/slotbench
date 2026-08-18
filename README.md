@@ -10,14 +10,16 @@ Same slot / account update, many endpoints, arrival-time deltas. Method document
 
 ## Status
 
-Scaffold. Spec is in `docs/`. No continuous measurement yet.
+**v0.1 runtime.** Relative-arrival P50/P90/P99 from integer microsecond fixtures. Method: [docs/METHOD.md](docs/METHOD.md). Published result: [docs/results/v0.1-fixture.json](docs/results/v0.1-fixture.json).
 
-## v0.1 (target)
+```bash
+cd slotbench
+PYTHONPATH=. python3 -m slotbench doctor --config fixtures/config.ok.json
+PYTHONPATH=. python3 -m slotbench bench --fixture fixtures/arrivals.json
+PYTHONPATH=. python3 -m unittest discover -s tests -v
+```
 
-- 2–3 free endpoints
-- Same batch of slots
-- P50 / P90 / P99 of relative arrival (not wall-clock faith)
-- A page or repo that updates
+One endpoint is an error. No Yellowstone/AGPL client in v0.1.
 
 ## What we will not do
 

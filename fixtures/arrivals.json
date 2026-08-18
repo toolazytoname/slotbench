@@ -1,0 +1,14 @@
+{
+  "arrivals": [
+    {"slot": 1, "endpoint": "alpha", "recv_us": 1000},
+    {"slot": 1, "endpoint": "beta", "recv_us": 1300},
+    {"slot": 2, "endpoint": "alpha", "recv_us": 2000},
+    {"slot": 2, "endpoint": "beta", "recv_us": 2050},
+    {"slot": 3, "endpoint": "alpha", "recv_us": 3000},
+    {"slot": 3, "endpoint": "beta", "recv_us": 4000},
+    {"slot": 4, "endpoint": "alpha", "recv_us": 4000},
+    {"slot": 4, "endpoint": "beta", "recv_us": 4010},
+    {"slot": 5, "endpoint": "alpha", "recv_us": 5000},
+    {"slot": 5, "endpoint": "beta", "recv_us": 5200}
+  ]
+}

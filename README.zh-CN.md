@@ -10,7 +10,7 @@
 
 ## 状态
 
-空仓库 + 规格。还没有持续测量。
+**v0.1 可运行。** 相对到达 P50/P90/P99。方法见 `docs/METHOD.md`，结果见 `docs/results/v0.1-fixture.json`。
 
 ## 明确不做
 
