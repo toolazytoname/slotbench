@@ -1,4 +1,6 @@
 {
+  "unit": "microseconds",
+  "method": "relative-to-first-seen, nearest-rank",
   "endpoints": {
     "alpha": {
       "n": 5,
@@ -12,7 +14,5 @@
       "p90": 1000,
       "p99": 1000
     }
-  },
-  "method": "relative-to-first-seen, nearest-rank",
-  "unit": "microseconds"
+  }
 }

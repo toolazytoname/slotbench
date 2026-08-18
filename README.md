@@ -10,16 +10,14 @@ Same slot / account update, many endpoints, arrival-time deltas. Method document
 
 ## Status
 
-**v0.1 runtime.** Relative-arrival P50/P90/P99 from integer microsecond fixtures. Method: [docs/METHOD.md](docs/METHOD.md). Published result: [docs/results/v0.1-fixture.json](docs/results/v0.1-fixture.json).
+**v0.1 runtime (Rust 1.85).** Relative-arrival P50/P90/P99 from integer microseconds. Method: [docs/METHOD.md](docs/METHOD.md). Published result: [docs/results/v0.1-fixture.json](docs/results/v0.1-fixture.json). No Yellowstone/AGPL client.
 
 ```bash
 cd slotbench
-PYTHONPATH=. python3 -m slotbench doctor --config fixtures/config.ok.json
-PYTHONPATH=. python3 -m slotbench bench --fixture fixtures/arrivals.json
-PYTHONPATH=. python3 -m unittest discover -s tests -v
+cargo test
+cargo run -- doctor --config fixtures/config.ok.json
+cargo run -- bench --fixture fixtures/arrivals.json
 ```
-
-One endpoint is an error. No Yellowstone/AGPL client in v0.1.
 
 ## What we will not do
 
