@@ -19,9 +19,16 @@ enum Cmd {
     },
     Bench {
         #[arg(long)]
-        fixture: PathBuf,
+        fixture: Option<PathBuf>,
+        /// Poll getSlot on config.endpoints (needs ≥2 URLs).
+        #[arg(long)]
+        live: bool,
+        #[arg(long, default_value_t = 5)]
+        samples: usize,
         #[arg(long)]
         out: Option<PathBuf>,
+        #[arg(long)]
+        config: Option<PathBuf>,
     },
 }
 
@@ -51,26 +58,83 @@ fn main() -> ExitCode {
             println!("ok method=docs/METHOD.md");
             ExitCode::SUCCESS
         }
-        Cmd::Bench { fixture, out } => {
-            let raw = match std::fs::read_to_string(&fixture) {
-                Ok(s) => s,
-                Err(e) => {
-                    eprintln!("{e}");
-                    return ExitCode::from(1);
+        Cmd::Bench {
+            fixture,
+            live,
+            samples,
+            out,
+            config,
+        } => {
+            let arrivals: Vec<Arrival> = if live {
+                let cfg_path = match config {
+                    Some(p) => p,
+                    None => {
+                        eprintln!("bench --live needs --config");
+                        return ExitCode::from(2);
+                    }
+                };
+                let raw = match std::fs::read_to_string(&cfg_path) {
+                    Ok(s) => s,
+                    Err(e) => {
+                        eprintln!("{e}");
+                        return ExitCode::from(1);
+                    }
+                };
+                let v: serde_json::Value = match serde_json::from_str(&raw) {
+                    Ok(v) => v,
+                    Err(e) => {
+                        eprintln!("{e}");
+                        return ExitCode::from(1);
+                    }
+                };
+                let hits = forbidden_fields(&v);
+                if !hits.is_empty() {
+                    eprintln!("doctor: forbidden secret field(s): {}", hits.join(", "));
+                    return ExitCode::from(2);
                 }
-            };
-            let v: serde_json::Value = match serde_json::from_str(&raw) {
-                Ok(v) => v,
-                Err(e) => {
-                    eprintln!("{e}");
-                    return ExitCode::from(1);
+                let endpoints: Vec<slotbench::live::Endpoint> =
+                    match serde_json::from_value(v["endpoints"].clone()) {
+                        Ok(e) => e,
+                        Err(e) => {
+                            eprintln!("config.endpoints: {e}");
+                            return ExitCode::from(1);
+                        }
+                    };
+                match slotbench::live::sample(&endpoints, samples) {
+                    Ok(a) => a,
+                    Err(e) => {
+                        eprintln!("{e}");
+                        return ExitCode::from(1);
+                    }
                 }
-            };
-            let arrivals: Vec<Arrival> = match serde_json::from_value(v["arrivals"].clone()) {
-                Ok(a) => a,
-                Err(e) => {
-                    eprintln!("{e}");
-                    return ExitCode::from(1);
+            } else {
+                let fix = match fixture {
+                    Some(p) => p,
+                    None => {
+                        eprintln!("bench: --fixture FILE or --live --config FILE");
+                        return ExitCode::from(2);
+                    }
+                };
+                let raw = match std::fs::read_to_string(&fix) {
+                    Ok(s) => s,
+                    Err(e) => {
+                        eprintln!("{e}");
+                        return ExitCode::from(1);
+                    }
+                };
+                let v: serde_json::Value = match serde_json::from_str(&raw) {
+                    Ok(v) => v,
+                    Err(e) => {
+                        eprintln!("{e}");
+                        return ExitCode::from(1);
+                    }
+                };
+                match serde_json::from_value(v["arrivals"].clone()) {
+                    Ok(a) => a,
+                    Err(e) => {
+                        eprintln!("{e}");
+                        return ExitCode::from(1);
+                    }
                 }
             };
             match board(&arrivals) {

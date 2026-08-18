@@ -15,8 +15,9 @@ Same slot / account update, many endpoints, arrival-time deltas. Method document
 ```bash
 cd slotbench
 cargo test
-cargo run -- doctor --config fixtures/config.ok.json
 cargo run -- bench --fixture fixtures/arrivals.json
+# 真上线：对两家公共 Solana RPC 采同一批 slot
+cargo run -- bench --live --config fixtures/config.live.json --samples 5
 ```
 
 ## What we will not do

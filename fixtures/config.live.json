@@ -1,0 +1,6 @@
+{
+  "endpoints": [
+    { "name": "solana-official", "url": "https://api.mainnet-beta.solana.com" },
+    { "name": "publicnode", "url": "https://solana-rpc.publicnode.com" }
+  ]
+}
