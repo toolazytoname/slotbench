@@ -1,5 +1,22 @@
 # 学习模块 · slotbench
 
+![封面](assets/cover.jpg)
+
+[封面动画 6s](assets/cover.mp4)
+
+## 架构
+
+![架构](assets/architecture.svg)
+
+```mermaid
+flowchart LR
+  F[arrivals.json] --> S[same slot]
+  L[getSlot 多家] --> S
+  S -->|缺一家| D[丢弃该 slot]
+  S -->|齐全| R[delay vs first]
+  R --> P[P50 P90 P99 整数]
+```
+
 ```bash
 cd slotbench
 cargo test
