@@ -34,4 +34,4 @@ Reported: P50, P90, P99. No floating interpolation.
 
 ## Dispute
 
-Publish your own `recv_us` fixture for the same slots. If your relative P50 differs after running `python3 -m slotbench bench --fixture yours.json`, open an issue with both files.
+Publish your own `recv_us` fixture for the same slots. If your relative P50 differs after running `cargo run -- bench --fixture yours.json`, open an issue with both files.
