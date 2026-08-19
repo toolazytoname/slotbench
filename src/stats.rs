@@ -38,6 +38,7 @@ pub enum StatsError {
     Percentile,
 }
 
+/// Delay vs the first endpoint to see that slot. Laptop UTC is not used as truth.
 pub fn relative_delays(arrivals: &[Arrival]) -> Result<HashMap<String, Vec<i64>>, StatsError> {
     let endpoints: BTreeSet<&str> = arrivals.iter().map(|a| a.endpoint.as_str()).collect();
     if endpoints.len() < 2 {
